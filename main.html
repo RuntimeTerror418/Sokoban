@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Mustapha Ibrahim">
+    <meta name="description" content="Sokoban Puzzle game">
+    <meta name="keywords" content="sokoban puzzle web-game web-apps canvas game-development">
+    <link rel="shortcut icon" href="assets/img/player.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/main.js" type="module"></script>
+    <title>Sokoban | Solotechlearn</title>
+</head>
+<body>
+    <main class="w-100 h-100">
+        <section class="scene m-0 p-0 w-100 h-100" id="preloader">
+            <div class="h-75 row align-items-center justify-content-center">
+                <div class="text-center">
+                    <i class="fa fa-square fa-xl fa-spin"></i>
+                </div>
+            </div>
+            <div class="h-25 row p-1 align-items-end">
+                <small class="text-center" id="preloader-text">Loading assets...</small>
+            </div>
+        </section>
+        <section class="scene m-0 p-0 w-100 h-100" id="menu-scene" style="display:none;">
+            <section class="row align-items-center justify-content-center m-0 p-0 w-100 h-100">
+                <div class="col">
+                    <div class="row row-cols-1 text-center justify-content-center">
+                        <h1 class="col text-dark">Sokoban</h1>
+                        <img src="assets/img/player.png" alt="player-avatar" style="width:90px;height:90px;">
+                        <div class="col">
+                            <button class="col btn btn-info w-50 mb-2 text-muted menu-btn" id="play-menu"><i class="fa fa-play text-muted"></i> Continue</button><br>
+                            <button class="col btn btn-info w-50 mb-2 text-muted menu-btn" id="level-menu"><i class="fa fa-bar-chart text-muted"></i> Level</button><br>
+                            <button class="col btn btn-info w-50 mb-2 text-muted menu-btn" id="about-menu"><i class="fa fa-info text-muted"></i> About</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+        <section class="scene m-0 p-0 w-100 h-100" id="play-scene" style="display:none;">
+            <section class="row row-cols-1 m-0 p-0 w-100 h-100">
+                <header class="col m-0 p-0 h-25 w-100">
+                    <div class="row m-0 p-0 w-100 h-100">
+                        <div class="col">
+                            <div class="row">
+                                <button class="toggle-btn col m-1 btn border text-dark"><i class="fa fa-arrow-left text-muted"></i></button>
+                                <button class=" col m-1 btn border" id="save-current-state-btn"><i class="fa fa-save text-success text-muted"></i></button>
+                                <button class="col m-1 btn border text-dark" id="restart-current-level-btn"><i class="fa fa-refresh text-muted"></i></button>
+                                <button class="col m-1 btn border text-dark" id="reverse-action-btn"><i class="fa fa-reply text-muted"></i></button>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row">
+                                <button class="col m-1 btn border text-dark" disabled id="level-display-btn"><b>Level: </b><br> 0</button>
+                                <button class="col m-1 btn border text-dark" disabled id="step-display-btn"><i class="fa fa-step"></i><b>Steps: </b><br> 0</button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <div class="col">
+                    <canvas id="cvs">
+                        <div class="bg-danger container text-light">
+                            <h1>Error</h1>
+                            <small>Your browser does not support the Canvas Element</small>
+                        </div>
+                    </canvas>
+                </div>
+                <div class="row row-cols-1 m-0 justify-content-center h-25">
+                    <button class="col m-1 btn w-50 btn-outline-info control" id="control-up"><i class="fa fa-arrow-up text-muted"></i></button>
+                    <div class="row">
+                        <button class="col m-1 btn btn-outline-info control" id="control-left"><i class="fa fa-arrow-left text-muted"></i></button>
+                        <button class="col m-1 btn btn-outline-info control" id="control-right"><i class="fa fa-arrow-right text-muted"></i></button>
+                    </div>
+                    <button class="col m-1 mb-5 btn w-50 btn-outline-info control" id="control-down"><i class="fa fa-arrow-down text-muted"></i></button>
+                </div>
+            </section>
+        </section>
+        <section class="scene m-0 p-0 w-100 h-100" id="level-scene" style="display: none;">
+            <section class="m-0 p-0 w-100 h-100">
+                <header class="bg-primary p-2 h-25">
+                    <button class="toggle-btn btn btn-outline-info text-light"><i class="fa fa-arrow-left"></i> Back</button>
+                    <h2 class="text-light p-5">Select Level</h2>
+                </header>
+                <div class="row align-items-center p-2">
+                    <div class="row m-0">
+                        <button class="col m-1 btn btn-outline-info level-btn">1</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">2</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">3</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">4</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">5</button>
+                    </div>
+                    <div class="row m-0">
+                        <button class="col m-1 btn btn-outline-info level-btn">6</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">7</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">8</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">9</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">10</button>
+                    </div>
+                    <div class="row m-0">
+                        <button class="col m-1 btn btn-outline-info level-btn">11</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">12</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">13</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">14</button>
+                        <button class="col m-1 btn btn-outline-info level-btn">15</button>
+                    </div>
+                    <button class="col btn btn-danger m-2" id="reset-level-btn"><i class="fa fa-gear"></i> Reset</button>
+                </div>
+            </section>
+        </section>
+        <section class="scene m-0 p-0 w-100 h-100" id="about-scene" style="display: none;">
+            <section class="m-0 p-0 w-100 h-100">
+                <header class="p-2 h-25">
+                    <button class="toggle-btn btn btn-outline-info"><i class="fa fa-arrow-left"></i> Back</button>
+                    <div class="p-1 m-2">
+                        <h2>Sokoban</h2>
+                        <small class="text-muted">v1.0.0</small>
+                    </div>
+                </header>
+                <div class="h-75 p-1" style="overflow:hidden;overflow-y:scroll;">
+                    <div class="p-1">
+                        <div class="border p-1 mb-2">
+                            <h2>About</h2>
+                            <small>This game was created by <a href="https://github.com/RuntimeTerror418/" target="_blank" >RuntimeTerror418</a> <i class="fa fa-external-link text-primary"></i> on github. More info about the history on sokoban could be found on <a href="https://en.wikipedia.org/wiki/Sokoban" target="_blank">https://en.wikipedia.org/wiki/Sokoban</a> <i class="fa fa-external-link text-primary"></i></small>
+                        </div>
+                        <div class="border p-1 mb-2">
+                            <h2>Playing Strategy</h2>
+                            <small>Press the directional arrow keys on the screen or from the keyboard to let the worker move across the the factory. If a crate is obstructing the workers path, he will try to push it forward to the same direction. The worker and the crate cannot move through the block and your objective is to push each block to their irrespected destination</small>
+                        </div>
+                        <div class="border p-1 mb-2">
+                            <h2>Credit</h2>
+                            <small>All sprites used in this program and some level informations, specifically 
+                                the game world without initial object placement has been obtained from
+                                <a href="https://code.sololearn.com/WItp1XM2DGFm/#">Sahad Fahad Sokoban <i class="fa fa-external-link text-primary"></i></a> on Sololearn
+                            </small>
+                        </div>
+                        <div class="border p-1 mb-2">
+                            <h2>Contact</h2>
+                            <button class="btn"><i class="fa fa-envelope text-muted"></i> <a href="mailto:solotechlearn@gmail.com"><small>Send Email</small></a></button><br>
+                        </div>
+                        <div class="border p-1 mb-2">
+                            <h2>Copyright</h2>
+                            <small>This software was released under the GNU General Public licence on github
+                                <a href="https://github.com/RuntimeTerror418/Sokoban">https://github.com/RuntimeTerror418/Sokoban <i class="fa fa-external-link text-primary"></i></a>
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+</body>
+</html>
